@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>주문서 제작</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+  </head>
+  <body>
+    <div class="container-md pt-sm-5 pt-2 pt-md-5 pt-lg-5 pb-2 pb-md-5 pb-lg-5 mb-5 mt-sm-1 mt-lg-5">
+      <h1 class="text-center">정도어싱크 제품주문서</h1>
+      <form method="POST" class="col-md-12 col-lg-8 mx-auto mt-5" onsubmit="return false;">
+        <div class="step">
+          <h1 class="mb-3">도어</h1>
+          <div class="row mb-3">
+            <label class="col-md-1 col-lg-1 form-label">도어</label>
+            <div class="col-md-5 col-lg-4">
+              <select name="option_door" id="option_door" class="form-control" onchange="select_door(this)">
+                <option value="">선택하세요</option>
+                <option value="도장 민자">도장 민자</option>
+                <option value="도장 NC디자인">도장 NC디자인</option>
+                <option value="한솔 일반 컬러">한솔 일반 컬러</option>
+                <option value="한솔 우드 컬러(무광)">한솔 우드 컬러(무광)</option>
+                <option value="한솔 스페셜 컬러(무광)">한솔 스페셜 컬러(무광)</option>
+              </select>
+            </div>
+
+            <label for="division" class="col-md-1 col-lg-1 offset-lg-2 form-label">구분</label>
+            <div class="col-md-5 col-lg-4">
+              <select name="option_division" id="option_division" class="form-control" onchange="updateColorOptions(this)">
+                <option value="">선택하세요</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-md-1 col-lg-1 form-label">색상</label>
+            <div class="col-md-5 col-lg-4">
+              <select name="option_color" id="option_color" class="form-control">
+                <option value="">선택하세요</option>
+              </select>
+            </div>
+            <label for="color" class="col-md-1 col-lg-1 offset-lg-2 form-label">NC 디자인</label>
+            <div class="col-md-5 col-lg-4">
+              <select name="option_nc" id="option_nc" class="form-control" disabled>
+                <option value="">선택하세요</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label for="door_width" class="col-md-1 col-lg-1 form-label">가로</label>
+            <div class="col-md-5 col-lg-4">
+              <div class="input-group">
+                <button class="btn btn-decrement btn-outline-secondary btn-minus" type="button" onclick="adjustDoorWidth(-1)">−</button>
+                <input type="text" inputmode="numeric" pattern="[0-9]*" style="text-align: center" class="form-control" id="door_width" placeholder="가로" />
+                <button class="btn btn-increment btn-outline-secondary btn-plus" type="button" onclick="adjustDoorWidth(1)">+</button>
+              </div>
+              <p>(최대 1200mm)</p>
+            </div>
+            <label for="door_height" class="col-md-1 col-lg-1 offset-lg-2 form-label">세로</label>
+            <div class="col-md-5 col-lg-4">
+              <div class="input-group">
+                <button class="btn btn-decrement btn-outline-secondary btn-minus" type="button" onclick="adjustDoorHeight(-1)">−</button>
+                <input type="text" inputmode="numeric" pattern="[0-9]*" style="text-align: center" class="form-control" id="door_height" placeholder="세로" />
+                <button class="btn btn-increment btn-outline-secondary btn-plus" type="button" onclick="adjustDoorHeight(1)">+</button>
+              </div>
+              <p>(최대 2440mm)</p>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label for="thickness" class="col-md-1 col-lg-1 form-label">두께</label>
+            <div class="col-md-5 col-lg-4">
+              <input type="text" name="door_thickness" id="door_thickness" placeholder="(18mm 고정)" class="form-control" disabled />
+            </div>
+
+            <label for="door_hinges" class="col-md-1 col-lg-1 offset-lg-2 form-label">경첩</label>
+            <div class="col-md-5 col-lg-4">
+              <input type="text" name="door_hinges" id="door_hinges" placeholder="좌경,위100,아래100/무경첩" class="form-control" />
+              <p>경첩타공무료</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="quantity" class="col-md-1 col-lg-1 form-label">수량</label>
+            <div class="col-md-5 col-lg-4">
+              <div class="input-group">
+                <button class="btn btn-decrement btn-outline-secondary btn-minus" type="button" onclick="adjustDoorQuantity(-1)">−</button>
+                <input type="text" inputmode="numeric" pattern="[0-9]*" style="text-align: center" class="form-control" id="quantity" placeholder="수량" />
+                <button class="btn btn-increment btn-outline-secondary btn-plus" type="button" onclick="adjustDoorQuantity(1)">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-5">
+            <div class="col-xs-6 mx-auto">
+              <div class="form-check form-check-inline">
+                <label for="shelf_1" class="form-check-label">후면도장</label>
+                <input type="checkbox" name="shelf" id="shelf_1" value="후면도장" class="form-check-input"/>
+              </div>
+              <div class="form-check form-check-inline">
+                <label for="shelf_2" class="form-check-label">상부장</label>
+                <input type="checkbox" name="shelf" id="shelf_2" value="상부장" class="form-check-input"/>
+              </div>
+              <div class="form-check form-check-inline">
+                <label for="shelf_3" class="form-check-label">하부장</label>
+                <input type="checkbox" name="shelf" id="shelf_3" value="하부장" class="form-check-input"/>
+              </div>
+              <div class="form-check form-check-inline">
+                <label for="shelf_4" class="form-check-label">플랩,후드장</label>
+                <input type="checkbox" name="shelf" id="shelf_4" value="플랩,후드장" class="form-check-input"/>
+              </div>
+              <div class="form-check form-check-inline">
+                <label for="shelf_5" class="form-check-label">서랍</label>
+                <input type="checkbox" name="shelf" id="shelf_5" value="서랍" class="form-check-input" onchange="handleShelfChange()"/>
+              </div>
+              <div class="form-check form-check-inline">
+                <label for="shelf_6" class="form-check-label">붙박이</label>
+                <input type="checkbox" name="shelf" id="shelf_6" value="붙박이" class="form-check-input"/>
+              </div>
+              <div class="form-check form-check-inline">
+                <label for="shelf_7" class="form-check-label">마감판</label>
+                <input type="checkbox" name="shelf" id="shelf_7" value="마감판" class="form-check-input" onchange="handleShelfChange()"/>
+              </div>
+              <div class="form-check form-check-inline">
+                <label for="shelf_8" class="form-check-label">걸레받이</label>
+                <input type="checkbox" name="shelf" id="shelf_8" value="걸레받이" class="form-check-input" onchange="handleShelfChange()"/>
+              </div>
+              <div class="form-check form-check-inline">
+                <label for="shelf_9" class="form-check-label">몰딩</label>
+                <input type="checkbox" name="shelf" id="shelf_9" value="몰딩" class="form-check-input" onchange="handleShelfChange()"/>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-5">
+            <div class="col-6 d-grid mx-auto">
+              <button type="button" class="btn btn-primary btn-cart" id="addDoor" onclick="addDoorToTable()">도어담기</button>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <h3 class="mb-3"><span style="font-size: 36px">F바</span><span style="font-size: 20px">(피스 필요없는 끼움바,높이30mm)</span></h3>
+          <h6 class="mb-3">주문시 도어사이즈 30mm 감안해주시기 바랍니다.</h6>
+          <div class="row mb-3">
+            <label for="option_fbar" class="col-md-1 form-label">색상</label>
+            <div class="col-md-5 col-lg-4">
+              <select name="option_fbar" id="option_fbar" class="form-control">
+                <option value="">선택하세요</option>
+              </select>
+            </div>
+            <label for="fbar_thickness" class="col-md-1 col-lg-1 offset-lg-2 form-label">두께</label>
+            <div class="col-md-5 col-lg-4">
+              <input type="text" name="fbar_thickness" id="fbar_thickness" placeholder="(18mm 고정)" class="form-control" disabled />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="fbarWidth" class="col-md-1 col-lg-1 form-label">길이</label>
+            <div class="col-md-5 col-lg-4">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button style="min-width: 2.5rem" class="btn btn-decrement btn-outline-secondary btn-minus" type="button" onclick="adjustFbarWidth(-1)"><strong>−</strong></button>
+                </div>
+                <input type="text" inputmode="numeric" pattern="[0-9]*" style="text-align: center" class="form-control" id="fbarWidth" placeholder="길이" />
+                <div class="input-group-append">
+                  <button style="min-width: 2.5rem" class="btn btn-increment btn-outline-secondary btn-plus" type="button" onclick="adjustFbarWidth(1)"><strong>+</strong></button>
+                </div>
+              </div>
+              <p>(최소 100mm ~ 최대 2400mm)</p>
+            </div>
+            <label for="fbarQuantity" class="col-md-1 col-lg-1 offset-lg-2 form-label">수량</label>
+            <div class="col-md-5 col-lg-4">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button style="min-width: 2.5rem" class="btn btn-decrement btn-outline-secondary btn-minus" type="button" onclick="adjustFbarQuantity(-1)"><strong>−</strong></button>
+                </div>
+                <input type="text" inputmode="numeric" pattern="[0-9]*" style="text-align: center" class="form-control" id="fbarQuantity" placeholder="수량" />
+                <div class="input-group-append">
+                  <button style="min-width: 2.5rem" class="btn btn-increment btn-outline-secondary btn-plus" type="button" onclick="adjustFbarQuantity(+1)"><strong>+</strong></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-5">
+            <div class="col-6 d-grid mx-auto">
+              <button type="button" class="btn btn-primary btn-cart" id="addFbar" onclick="addFbarToTable()">F바 담기</button>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <h1 class="mb-3">부자재</h1>
+          <div class="row mb-3">
+            <label for="option_material" class="col-md-1 form-label">종류</label>
+            <div class="col-md-5 col-lg-4">
+              <select name="option_material" id="option_material" class="form-control" onchange="handleMaterialChange(this)">
+                <option value="">선택하세요</option>
+              </select>
+            </div>
+            <label for="materialQuantity" class="col-md-1 col-lg-1 offset-lg-2 form-label">수량</label>
+            <div class="col-md-5 col-lg-4">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button style="min-width: 2.5rem" class="btn btn-decrement btn-outline-secondary btn-minus" type="button" onclick="adjustMaterialQuantity(-1)"><strong>−</strong></button>
+                </div>
+                <input type="text" inputmode="numeric" pattern="[0-9]*" style="text-align: center" class="form-control" id="materialQuantity" placeholder="수량" />
+                <div class="input-group-append">
+                  <button style="min-width: 2.5rem" class="btn btn-increment btn-outline-secondary btn-plus" type="button" onclick="adjustMaterialQuantity(+1)"><strong>+</strong></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="materialWidth" class="col-md-1 col-lg-1 form-label">길이</label>
+            <div class="col-md-5 col-lg-4">
+                <input type="text" inputmode="numeric" pattern="[0-9]*" class="form-control" id="materialWidth" placeholder="2구 손잡이 선택시 작성" disabled/>
+            </div>
+          </div>
+          <div class="row mb-5">
+            <div class="col-6 d-grid mx-auto">
+              <button type="button" class="btn btn-primary btn-cart" data-step="3" onclick="addMaterialToTable()">부자재 담기</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table" id="table">
+            <thead>
+              <tr>
+                <th class="text-center" scope="col">선택</th>
+                <th class="text-center" scope="col">제품명</th>
+                <th class="text-center" scope="col">주문크기 (두께, 가로, 세로)</th>
+                <th class="text-center" scope="col">경첩</th>
+                <th class="text-center" scope="col">수량</th>
+                <th class="text-center" scope="col">가격</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div id="totalPriceContainer" style="text-align: center; margin-top: 20px">
+          <div id="totalPriceBox" style="display: inline-block; padding: 10px 20px; background-color: #f0f0f0; border-radius: 5px">
+            <p id="totalPrice" style="margin: 0">총 견적 금액</p>
+          </div>
+          <div id="unit10000">10,000원 단위</div>
+          <div id="unit1000">1,000원 단위</div>
+          <div id="unit100">100원 단위</div>
+        </div>
+
+        <button id="deleteSelected" class="btn btn-warning btn-sm" onclick="deleteSelectedRows()">선택 지우기</button>
+        <button id="deleteAll" class="btn btn-danger btn-sm" onclick="deleteAllRows()">전체 지우기</button>
+
+        <div style="margin-top: 20px">
+          <div class="mb-3">
+            <label for="customerName" class="form-label">주문자명</label>
+            <input type="text" class="form-control" id="customerName" placeholder="주문자명을 입력하세요." />
+          </div>
+          <div class="mb-3">
+            <label for="customerContact" class="form-label">연락처</label>
+            <input type="text" class="form-control" id="customerContact" placeholder="연락처를 입력하세요." />
+          </div>
+          <div class="mb-3">
+            <label for="customerEmail" class="form-label">견적서 이메일로 받기(선택)</label>
+            <input type="text" class="form-control" id="customerEmail" placeholder="이메일을 입력하세요.(선택)" />
+          </div>
+          <div class="mb-3">
+            <label for="customerRequirements" class="form-label">요구사항</label>
+            <textarea
+              class="form-control"
+              id="customerRequirements"
+              rows="8"
+              placeholder="15만원 이상시 경첩은 장바구니에 담지 않아도 기본으로 제공됩니다.
+(15t경첩으로 기본제공되며 18t or 인도어 경첩일시 기재 부탁드립니다.)
+선불 발송을 원할시 미리 말씀해주시길 바랍니다."
+            ></textarea>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary" onclick="sendOrderEmail()">판매자에게 주문서 보내기</button>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-12 text-center font-bold">‘견적서 작성후 010-7769-9231로 문자 바랍니다 !’</div>
+          <div class="col-md-12 text-center font-bold">‘또한 견적작성이 어려울시 편하게 연락 바랍니다 !’</div>
+        </div>
+      </form>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    </div>
+  </body>
+</html>

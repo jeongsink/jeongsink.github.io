@@ -229,12 +229,10 @@ async function addDoorToTable() {
       const isHighNC = nc === "킹덤" || nc === "웨인스";
       const isMidNC = nc === "(21T)미란다" || nc === "(21T)그랑디아";
 
-      if (values.type.includes("도장") && !values.color.includes("화이트")) {
-        if (values.division === "무광") {
-          totalPrice *= 1.2;
-        } else if (values.division === "유광") {
-          totalPrice *= 1.3;
-        }
+      if (values.division === "무광") {
+        totalPrice *= 1.2;
+      } else if (values.division === "유광") {
+        totalPrice *= 1.3;
       }
 
       if (hasBackPaint && (isHighNC || isMidNC)) {

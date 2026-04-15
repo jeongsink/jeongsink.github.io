@@ -193,7 +193,7 @@ async function addDoorToTable() {
   const heightUnits = [399, 499, 599, 699, 799, 899, 999, 1099, 1199, 1299, 1399, 1499, 1599, 1699, 1799, 1899, 1999, 2099, 2199, 2299, 2399, 2400];
   var unitWidth = getUnitValue(widthUnits, values.width);
   var unitHeight = getUnitValue(heightUnits, values.height);
-  if (values.height <= 2440) unitHeight = 2400; // temp
+  if (values.height >= 2400) unitHeight = 2400; // temp
 
   const cell1 = newRow.insertCell();
   cell1.innerHTML = '<input type="checkbox">';
